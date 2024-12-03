@@ -10,15 +10,16 @@
 </head>
 <body>
     <div class="container">
+        <div class="bookmarks-btn-container">
+            <button class="bookmarks-btn" aria-label="Saved Recipes">
+                <i class="fa-solid fa-bookmark"></i>
+            </button>
+        </div>
         <div class="header-container">
-            <div class="header-left">
-                <h1>RECIPE ROLL</h1>
-                <button class="bookmarks-btn view-recipe">
-                    <i class="fa-solid fa-bookmark"></i> Saved Recipes
-                </button>
-            </div>
-            <div class="header-right">
-                <img src="icons/refresh_icon.png" alt="Refresh" class="refresh-icon">
+            <h1>RECIPE ROLL</h1>
+            <img src="icons/refresh_icon.png" alt="Refresh" class="refresh-icon">
+            <div class="mobile-refresh">
+                <img src="icons/refresh_icon.png" alt="Refresh Mobile">
             </div>
         </div>
 
@@ -26,6 +27,14 @@
             <button class="price-btn" data-time="quick">Quick</button>
             <button class="price-btn" data-time="medium">Medium</button>
             <button class="price-btn" data-time="long">Long</button>
+        </div>
+
+        <div class="bookmarks-overlay">
+            <div class="bookmarks-header">
+                <h2>Saved Recipes</h2>
+                <button class="close-bookmarks">&times;</button>
+            </div>
+            <div class="bookmarks-list"></div>
         </div>
 
         <div class="recipe-card">
@@ -50,24 +59,6 @@
                     <img id="recipeImage" src="https://spoonacular.com/recipeImages/716429-556x370.jpg" alt="Recipe">
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Mobile Refresh Button -->
-    <button class="mobile-refresh">
-        <img src="icons/refresh_icon-white.png" alt="Refresh">
-    </button>
-
-    <!-- Bookmarks Overlay -->
-    <div class="bookmarks-overlay">
-        <div class="bookmarks-header">
-            <h2>Saved Recipes</h2>
-            <button class="close-bookmarks">
-                <i class="fa-solid fa-times"></i>
-            </button>
-        </div>
-        <div class="bookmarks-list">
-            <!-- Bookmarked recipes will be added here dynamically -->
         </div>
     </div>
 
