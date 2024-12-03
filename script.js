@@ -22,11 +22,10 @@ const overlayBg = document.createElement('div');
 overlayBg.className = 'overlay-bg';
 document.body.appendChild(overlayBg);
 
-// Time filters in minutes
+// Time filters 
 const timeFilters = {
     'quick': 30,
-    'medium': 60,
-    'long': 120
+    'easy': null  // We'll filter by difficulty instead
 };
 
 let currentTimeFilter = 'quick';
@@ -166,58 +165,155 @@ timeButtons.forEach(button => {
 // Function to get a random recipe
 async function getRandomRecipe() {
     try {
-        // First get a random dinner category
-        const category = DINNER_CATEGORIES[Math.floor(Math.random() * DINNER_CATEGORIES.length)];
+        // Fetch a random meal from the API
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/random.php`);
+        const data = await response.json();
         
-        // Get all meals in this category
-        const categoryResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
-        const categoryData = await categoryResponse.json();
-        
-        if (!categoryData.meals) {
-            throw new Error('No meals found in category');
+        if (!data.meals || data.meals.length === 0) {
+            throw new Error('No recipes found');
         }
-
-        // Pick a random meal from the category
-        const randomMeal = categoryData.meals[Math.floor(Math.random() * categoryData.meals.length)];
         
-        // Get full meal details
-        const mealResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${randomMeal.idMeal}`);
-        const mealData = await mealResponse.json();
-        currentRecipe = mealData.meals[0];
-
-        // Update the UI
-        recipeImage.src = currentRecipe.strMealThumb;
-        recipeName.textContent = currentRecipe.strMeal.toUpperCase();
+        let filteredMeals = data.meals;
         
-        // Estimate cooking time based on number of ingredients
-        const ingredientCount = Object.keys(currentRecipe).filter(key => key.startsWith('strIngredient') && currentRecipe[key]).length;
-        const estimatedTime = Math.max(20, ingredientCount * 10); // minimum 20 mins
-        cookTime.textContent = `🕒 ${estimatedTime} mins`;
+        // If 'easy' filter is selected, filter by difficulty
+        if (currentTimeFilter === 'easy') {
+            filteredMeals = data.meals.filter(meal => {
+                // Determine difficulty based on number of steps
+                const steps = meal.strInstructions.split('.').length;
+                return steps <= 5; // Easy recipes have 5 or fewer steps
+            });
+            
+            // If no easy meals found, fall back to all meals
+            if (filteredMeals.length === 0) {
+                filteredMeals = data.meals;
+            }
+        }
         
-        // Set difficulty based on number of ingredients and steps
-        const steps = currentRecipe.strInstructions.split('.').length;
-        const difficultyLevel = steps <= 5 ? 'Easy' : 
-                              steps <= 10 ? 'Medium' : 'Hard';
-        difficulty.textContent = `👨‍🍳 ${difficultyLevel}`;
+        // If 'quick' filter is selected, filter by cooking time if possible
+        if (currentTimeFilter === 'quick') {
+            filteredMeals = filteredMeals.filter(meal => {
+                // Estimate cooking time based on number of ingredients
+                const ingredientCount = Object.keys(meal).filter(key => key.startsWith('strIngredient') && meal[key]).length;
+                const estimatedTime = Math.max(20, ingredientCount * 10);
+                return estimatedTime <= timeFilters['quick'];
+            });
+            
+            // If no quick meals found, fall back to all meals
+            if (filteredMeals.length === 0) {
+                filteredMeals = data.meals;
+            }
+        }
         
-        // Update bookmark button state
-        const isBookmarked = bookmarks.some(bookmark => bookmark.idMeal === currentRecipe.idMeal);
-        bookmarkBtn.classList.toggle('active', isBookmarked);
-        bookmarkBtn.innerHTML = isBookmarked ? 
-            '<i class="fa-solid fa-heart"></i>' : 
-            '<i class="fa-regular fa-heart"></i>';
+        // Select a random meal from filtered or all meals
+        const selectedMeal = filteredMeals[Math.floor(Math.random() * filteredMeals.length)];
         
-        // Estimate servings (most recipes serve 4)
-        servings.textContent = `🍽️ Serves: 4`;
-        recipeLink.href = currentRecipe.strSource || currentRecipe.strYoutube || '#';
-
-        // Ensure bookmarks list is preserved
-        updateBookmarksList();
-
+        displayRecipe(selectedMeal);
     } catch (error) {
         console.error('Error fetching recipe:', error);
         setFallbackRecipe();
     }
+}
+
+// Helper function to extract cooking time (might need customization)
+function extractCookingTime(meal) {
+    // This is a placeholder. You'll need to implement actual time extraction
+    // based on how cooking time is represented in the API
+    return 30; // Default to 30 minutes
+}
+
+// Function to display a recipe
+function displayRecipe(recipe) {
+    // Log full recipe details for inspection
+    console.log('Full Recipe Details:', recipe);
+
+    // Update the UI with the recipe details
+    recipeImage.src = recipe.strMealThumb;
+    recipeName.textContent = recipe.strMeal.toUpperCase();
+    
+    // Estimate cooking time based on number of ingredients
+    const ingredientCount = Object.keys(recipe).filter(key => key.startsWith('strIngredient') && recipe[key]).length;
+    const estimatedTime = Math.max(20, ingredientCount * 10); // minimum 20 mins
+    cookTime.textContent = `🕒 ${estimatedTime} mins`;
+    
+    // Set difficulty based on number of ingredients and steps
+    const steps = recipe.strInstructions.split('.').length;
+    const difficultyLevel = steps <= 5 ? 'Easy' : 
+                          steps <= 10 ? 'Medium' : 'Hard';
+    difficulty.textContent = `👨‍🍳 ${difficultyLevel}`;
+    
+    // Update bookmark button state
+    const isBookmarked = bookmarks.some(bookmark => bookmark.idMeal === recipe.idMeal);
+    bookmarkBtn.classList.toggle('active', isBookmarked);
+    bookmarkBtn.innerHTML = isBookmarked ? 
+        '<i class="fa-solid fa-heart"></i>' : 
+        '<i class="fa-regular fa-heart"></i>';
+    
+    // Estimate servings (most recipes serve 4)
+    servings.textContent = `🍽️ Serves: 4`;
+    
+    // Update recipe link
+    recipeLink.href = recipe.strSource || recipe.strYoutube || '#';
+    
+    // Populate ingredients and instructions
+    const ingredientsList = [];
+    const measurementsList = [];
+    
+    // Collect ingredients and measurements
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = recipe[`strIngredient${i}`];
+        const measurement = recipe[`strMeasure${i}`];
+        
+        if (ingredient && ingredient.trim() !== '') {
+            ingredientsList.push(ingredient);
+            measurementsList.push(measurement || '');
+        }
+    }
+    
+    // Create a modal or overlay to show full recipe details
+    const recipeDetailsModal = document.createElement('div');
+    recipeDetailsModal.className = 'recipe-details-modal';
+    recipeDetailsModal.innerHTML = `
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <h2>${recipe.strMeal}</h2>
+            <div class="modal-recipe-image">
+                <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+            </div>
+            <div class="modal-recipe-details">
+                <h3>Ingredients</h3>
+                <ul>
+                    ${ingredientsList.map((ingredient, index) => 
+                        `<li>${measurementsList[index]} ${ingredient}</li>`
+                    ).join('')}
+                </ul>
+                <h3>Instructions</h3>
+                <p>${recipe.strInstructions}</p>
+            </div>
+            ${recipe.strSource ? `<a href="${recipe.strSource}" target="_blank" class="view-full-recipe">View Full Recipe</a>` : ''}
+            ${recipe.strYoutube ? `<a href="${recipe.strYoutube}" target="_blank" class="view-youtube">Watch on YouTube</a>` : ''}
+        </div>
+    `;
+    
+    // Add close modal functionality
+    recipeLink.onclick = (e) => {
+        e.preventDefault();
+        document.body.appendChild(recipeDetailsModal);
+        
+        const closeModal = recipeDetailsModal.querySelector('.close-modal');
+        closeModal.onclick = () => {
+            document.body.removeChild(recipeDetailsModal);
+        };
+        
+        // Close modal when clicking outside
+        recipeDetailsModal.onclick = (e) => {
+            if (e.target === recipeDetailsModal) {
+                document.body.removeChild(recipeDetailsModal);
+            }
+        };
+    };
+
+    // Ensure bookmarks list is preserved
+    updateBookmarksList();
 }
 
 // Fallback recipe in case API fails
