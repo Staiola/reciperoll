@@ -172,6 +172,9 @@ async function getRandomRecipe() {
 
 // Function to display a recipe
 function displayRecipe(recipe) {
+    // Set current recipe
+    currentRecipe = recipe;
+
     // Log full recipe details for inspection
     console.log('Full Recipe Details:', recipe);
 
@@ -198,6 +201,11 @@ function displayRecipe(recipe) {
     // Set up recipe link to open modal
     recipeLink.onclick = (e) => {
         e.preventDefault();
+        showRecipeDetailsModal(recipe);
+    };
+
+    // Make recipe image clickable to open modal
+    recipeImage.onclick = () => {
         showRecipeDetailsModal(recipe);
     };
     
@@ -228,6 +236,11 @@ function showRecipeDetailsModal(recipe) {
             
             <div class="recipe-modal-image">
                 <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+                ${recipe.strSource ? `
+                    <a href="${recipe.strSource}" target="_blank" class="recipe-image-source-btn">
+                        Source
+                    </a>
+                ` : ''}
             </div>
             
             <div class="recipe-modal-sections">
