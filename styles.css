@@ -522,17 +522,25 @@ h1 {
 
 .recipe-modal-close {
     color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
     position: absolute;
     top: 10px;
     right: 15px;
+    font-size: 36px;  
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;  
+    line-height: 1;
+    z-index: 10;
 }
 
-.recipe-modal-close:hover {
-    color: white;
+@media (max-width: 768px) {
+    .recipe-modal-close {
+        top: 0;
+        right: 0;
+        padding: 15px;  
+        background-color: rgba(0,0,0,0.3);  
+        border-radius: 0 0 0 10px;
+    }
 }
 
 .recipe-modal-image {
