@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Roll - Random Recipe Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.cdnfonts.com/css/futura-pt" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <div class="header-left">
+                <h1>RECIPE ROLL</h1>
+                <button class="bookmarks-btn view-recipe">
+                    <i class="fa-solid fa-bookmark"></i> Saved Recipes
+                </button>
+            </div>
+            <div class="header-right">
+                <img src="icons/refresh_icon.png" alt="Refresh" class="refresh-icon">
+            </div>
+        </div>
+
+        <div class="time-filters">
+            <button class="price-btn" data-time="quick">Quick</button>
+            <button class="price-btn" data-time="medium">Medium</button>
+            <button class="price-btn" data-time="long">Long</button>
+        </div>
+
+        <div class="recipe-card">
+            <div class="recipe-content">
+                <div class="recipe-info">
+                    <div class="recipe-header">
+                        <h2 id="recipeName">LOADING...</h2>
+                        <button class="bookmark-btn" title="Save Recipe">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="recipe-details">
+                        <p id="cookTime"> 30 mins</p>
+                        <p id="difficulty"> Easy</p>
+                        <p id="servings"> Serves: 4</p>
+                    </div>
+                    <div class="recipe-actions">
+                        <a id="recipeLink" href="#" target="_blank" class="view-recipe">View Recipe →</a>
+                    </div>
+                </div>
+                <div class="recipe-image">
+                    <img id="recipeImage" src="https://spoonacular.com/recipeImages/716429-556x370.jpg" alt="Recipe">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Refresh Button -->
+    <button class="mobile-refresh">
+        <img src="icons/refresh_icon-white.png" alt="Refresh">
+    </button>
+
+    <!-- Bookmarks Overlay -->
+    <div class="bookmarks-overlay">
+        <div class="bookmarks-header">
+            <h2>Saved Recipes</h2>
+            <button class="close-bookmarks">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        <div class="bookmarks-list">
+            <!-- Bookmarked recipes will be added here dynamically -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

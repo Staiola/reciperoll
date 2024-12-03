@@ -1,0 +1,501 @@
+/* Base styles */
+body {
+    margin: 0;
+    padding: 20px;
+    background: #1a1a1a;
+    color: white;
+    font-family: 'Futura PT', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.refresh-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    filter: invert(1);
+}
+
+.refresh-icon:hover {
+    transform: rotate(180deg);
+}
+
+/* Time Filters */
+.time-filters {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.price-btn {
+    background: #333;
+    border: none;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Futura PT', sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.price-btn:hover {
+    background: #444;
+}
+
+.price-btn.active {
+    background: #555;
+}
+
+/* Recipe Card */
+.recipe-card {
+    background: #222;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.recipe-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* Recipe Info */
+.recipe-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.recipe-header h2 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.recipe-details {
+    margin-bottom: 2rem;
+}
+
+.recipe-details p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.view-recipe {
+    display: inline-block;
+    background: #333;
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+}
+
+.view-recipe:hover {
+    background: #444;
+}
+
+/* Recipe Image */
+.recipe-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.recipe-image img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Bookmark Button */
+.bookmark-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.2s ease;
+}
+
+.bookmark-btn:hover {
+    transform: scale(1.1);
+}
+
+.bookmark-btn i {
+    transition: color 0.2s ease;
+}
+
+.bookmark-btn.active i {
+    color: #ff4b4b;
+}
+
+/* Bookmarks Overlay */
+.bookmarks-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background: #1a1a1a;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+    transition: right 0.3s ease;
+    z-index: 1001;
+}
+
+.bookmarks-overlay.active {
+    right: 0;
+}
+
+.bookmarks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #333;
+}
+
+.bookmarks-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-bookmarks {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.bookmarks-list {
+    padding: 1.5rem;
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+}
+
+.bookmark-item {
+    display: flex;
+    align-items: center;
+    background: #222;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.bookmark-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.bookmark-item-info {
+    flex-grow: 1;
+}
+
+.bookmark-item:active {
+    background: #444;
+}
+
+.delete-bookmark {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s ease;
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.delete-bookmark:hover {
+    color: #ff6666;
+}
+
+.delete-bookmark i {
+    font-size: 1.2rem;
+}
+
+/* Header Container */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.app-title {
+    display: flex;
+    align-items: center;
+}
+
+.app-title h1 {
+    margin: 0;
+}
+
+/* Bookmarks Button */
+.bookmarks-btn.view-recipe {
+    display: inline-block;
+    background: #333;
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: 'Futura PT', sans-serif;
+}
+
+.bookmarks-btn.view-recipe:hover {
+    background: #444;
+}
+
+.bookmarks-btn.view-recipe i {
+    margin-right: 0.5rem;
+}
+
+/* Header Container Styles for Larger Screens */
+@media (min-width: 769px) {
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-right {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-container .refresh-icon {
+        width: 36px;  
+        height: 36px; 
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        margin-right: 20px;
+    }
+
+    .header-container .refresh-icon:hover {
+        transform: rotate(180deg);
+    }
+
+    .bookmarks-btn.view-recipe {
+        margin: 0;
+    }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .header-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-right {
+        margin-top: 20px; /* Increased margin for larger icon */
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .header-right .refresh-icon {
+        width: 120px;  /* 30px * 4 */
+        height: 120px; /* 30px * 4 */
+        object-fit: contain;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .header-right .refresh-icon:hover {
+        transform: rotate(180deg);
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .refresh-icon {
+        display: none;
+    }
+
+    .time-filters {
+        margin-bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .price-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .recipe-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .recipe-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .recipe-details {
+        margin-bottom: 1rem;
+    }
+
+    .recipe-details p {
+        font-size: 1rem;
+        margin: 0.3rem 0;
+    }
+
+    .recipe-image img {
+        height: 250px;
+    }
+
+    .view-recipe {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .mobile-refresh {
+        display: flex;
+        position: fixed;
+        bottom: 15px;
+        left: 15px;
+        background: #222;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 1000;
+        padding: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .mobile-refresh img {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+    }
+
+    .bookmarks-btn.view-recipe {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .app-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .app-title .refresh-icon {
+        margin-left: 10px;
+    }
+}
+
+.mobile-refresh {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-refresh {
+        display: flex !important;
+    }
+}
+
+/* Overlay Background */
+.overlay-bg {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.overlay-bg.active {
+    display: block;
+}
