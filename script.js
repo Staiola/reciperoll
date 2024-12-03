@@ -23,12 +23,9 @@ overlayBg.className = 'overlay-bg';
 document.body.appendChild(overlayBg);
 
 // Time filters 
-const timeFilters = {
-    'quick': 30,
-    'easy': null  // We'll filter by difficulty instead
-};
+const timeFilters = {};
 
-let currentTimeFilter = 'quick';
+let currentTimeFilter = null;
 
 // Categories for main dishes
 const DINNER_CATEGORIES = ['Beef', 'Chicken', 'Lamb', 'Pasta', 'Pork', 'Seafood', 'Vegetarian'];
@@ -152,16 +149,6 @@ bookmarksBtn.addEventListener('click', toggleBookmarksOverlay);
 closeBookmarksBtn.addEventListener('click', toggleBookmarksOverlay);
 overlayBg.addEventListener('click', toggleBookmarksOverlay);
 
-// Add click events to time filter buttons
-timeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        timeButtons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        currentTimeFilter = button.dataset.time;
-        getRandomRecipe();
-    });
-});
-
 // Function to get a random recipe
 async function getRandomRecipe() {
     try {
@@ -173,52 +160,14 @@ async function getRandomRecipe() {
             throw new Error('No recipes found');
         }
         
-        let filteredMeals = data.meals;
-        
-        // If 'easy' filter is selected, filter by difficulty
-        if (currentTimeFilter === 'easy') {
-            filteredMeals = data.meals.filter(meal => {
-                // Determine difficulty based on number of steps
-                const steps = meal.strInstructions.split('.').length;
-                return steps <= 5; // Easy recipes have 5 or fewer steps
-            });
-            
-            // If no easy meals found, fall back to all meals
-            if (filteredMeals.length === 0) {
-                filteredMeals = data.meals;
-            }
-        }
-        
-        // If 'quick' filter is selected, filter by cooking time if possible
-        if (currentTimeFilter === 'quick') {
-            filteredMeals = filteredMeals.filter(meal => {
-                // Estimate cooking time based on number of ingredients
-                const ingredientCount = Object.keys(meal).filter(key => key.startsWith('strIngredient') && meal[key]).length;
-                const estimatedTime = Math.max(20, ingredientCount * 10);
-                return estimatedTime <= timeFilters['quick'];
-            });
-            
-            // If no quick meals found, fall back to all meals
-            if (filteredMeals.length === 0) {
-                filteredMeals = data.meals;
-            }
-        }
-        
-        // Select a random meal from filtered or all meals
-        const selectedMeal = filteredMeals[Math.floor(Math.random() * filteredMeals.length)];
+        // Select the first (and only) meal
+        const selectedMeal = data.meals[0];
         
         displayRecipe(selectedMeal);
     } catch (error) {
         console.error('Error fetching recipe:', error);
         setFallbackRecipe();
     }
-}
-
-// Helper function to extract cooking time (might need customization)
-function extractCookingTime(meal) {
-    // This is a placeholder. You'll need to implement actual time extraction
-    // based on how cooking time is represented in the API
-    return 30; // Default to 30 minutes
 }
 
 // Function to display a recipe
@@ -230,16 +179,11 @@ function displayRecipe(recipe) {
     recipeImage.src = recipe.strMealThumb;
     recipeName.textContent = recipe.strMeal.toUpperCase();
     
-    // Estimate cooking time based on number of ingredients
-    const ingredientCount = Object.keys(recipe).filter(key => key.startsWith('strIngredient') && recipe[key]).length;
-    const estimatedTime = Math.max(20, ingredientCount * 10); // minimum 20 mins
-    cookTime.textContent = `🕒 ${estimatedTime} mins`;
+    // Remove cooking time estimation
+    cookTime.textContent = '';
     
-    // Set difficulty based on number of ingredients and steps
-    const steps = recipe.strInstructions.split('.').length;
-    const difficultyLevel = steps <= 5 ? 'Easy' : 
-                          steps <= 10 ? 'Medium' : 'Hard';
-    difficulty.textContent = `👨‍🍳 ${difficultyLevel}`;
+    // Remove difficulty level estimation
+    difficulty.textContent = '';
     
     // Update bookmark button state
     const isBookmarked = bookmarks.some(bookmark => bookmark.idMeal === recipe.idMeal);
@@ -248,72 +192,87 @@ function displayRecipe(recipe) {
         '<i class="fa-solid fa-heart"></i>' : 
         '<i class="fa-regular fa-heart"></i>';
     
-    // Estimate servings (most recipes serve 4)
-    servings.textContent = `🍽️ Serves: 4`;
+    // Remove servings estimation
+    servings.textContent = '';
     
-    // Update recipe link
-    recipeLink.href = recipe.strSource || recipe.strYoutube || '#';
+    // Set up recipe link to open modal
+    recipeLink.onclick = (e) => {
+        e.preventDefault();
+        showRecipeDetailsModal(recipe);
+    };
     
-    // Populate ingredients and instructions
-    const ingredientsList = [];
-    const measurementsList = [];
-    
+    // Ensure bookmarks list is preserved
+    updateBookmarksList();
+}
+
+// Function to create and display recipe details modal
+function showRecipeDetailsModal(recipe) {
     // Collect ingredients and measurements
+    const ingredientsList = [];
     for (let i = 1; i <= 20; i++) {
         const ingredient = recipe[`strIngredient${i}`];
         const measurement = recipe[`strMeasure${i}`];
         
         if (ingredient && ingredient.trim() !== '') {
-            ingredientsList.push(ingredient);
-            measurementsList.push(measurement || '');
+            ingredientsList.push(`${measurement || ''} ${ingredient}`.trim());
         }
     }
-    
-    // Create a modal or overlay to show full recipe details
-    const recipeDetailsModal = document.createElement('div');
-    recipeDetailsModal.className = 'recipe-details-modal';
-    recipeDetailsModal.innerHTML = `
-        <div class="modal-content">
-            <button class="close-modal">&times;</button>
+
+    // Create modal element
+    const modal = document.createElement('div');
+    modal.className = 'recipe-modal';
+    modal.innerHTML = `
+        <div class="recipe-modal-content">
+            <span class="recipe-modal-close">&times;</span>
             <h2>${recipe.strMeal}</h2>
-            <div class="modal-recipe-image">
+            
+            <div class="recipe-modal-image">
                 <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
             </div>
-            <div class="modal-recipe-details">
-                <h3>Ingredients</h3>
-                <ul>
-                    ${ingredientsList.map((ingredient, index) => 
-                        `<li>${measurementsList[index]} ${ingredient}</li>`
-                    ).join('')}
-                </ul>
-                <h3>Instructions</h3>
-                <p>${recipe.strInstructions}</p>
+            
+            <div class="recipe-modal-sections">
+                <div class="recipe-modal-ingredients">
+                    <h3>Ingredients</h3>
+                    <ul>
+                        ${ingredientsList.map(ingredient => `<li>${ingredient}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="recipe-modal-instructions">
+                    <h3>Instructions</h3>
+                    <p>${recipe.strInstructions}</p>
+                </div>
             </div>
-            ${recipe.strSource ? `<a href="${recipe.strSource}" target="_blank" class="view-full-recipe">View Full Recipe</a>` : ''}
-            ${recipe.strYoutube ? `<a href="${recipe.strYoutube}" target="_blank" class="view-youtube">Watch on YouTube</a>` : ''}
+            
+            <div class="recipe-modal-links">
+                ${recipe.strSource ? `<a href="${recipe.strSource}" target="_blank" class="recipe-source-link">Original Recipe</a>` : ''}
+                ${recipe.strYoutube ? `<a href="${recipe.strYoutube}" target="_blank" class="recipe-youtube-link">Watch on YouTube</a>` : ''}
+            </div>
         </div>
     `;
-    
-    // Add close modal functionality
-    recipeLink.onclick = (e) => {
-        e.preventDefault();
-        document.body.appendChild(recipeDetailsModal);
-        
-        const closeModal = recipeDetailsModal.querySelector('.close-modal');
-        closeModal.onclick = () => {
-            document.body.removeChild(recipeDetailsModal);
-        };
-        
-        // Close modal when clicking outside
-        recipeDetailsModal.onclick = (e) => {
-            if (e.target === recipeDetailsModal) {
-                document.body.removeChild(recipeDetailsModal);
-            }
-        };
-    };
 
-    // Ensure bookmarks list is preserved
-    updateBookmarksList();
+    // Add to body
+    document.body.appendChild(modal);
+
+    // Close modal when clicking close button
+    const closeBtn = modal.querySelector('.recipe-modal-close');
+    closeBtn.addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+
+    // Close modal when clicking outside of content
+    modal.addEventListener('click', (event) => {
+        // Check if the click is directly on the modal (not on its content)
+        if (event.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+
+    // Prevent clicks inside the modal content from closing the modal
+    const modalContent = modal.querySelector('.recipe-modal-content');
+    modalContent.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
 }
 
 // Fallback recipe in case API fails
@@ -338,6 +297,16 @@ function triggerRefresh(element) {
 // Add click event to refresh icons
 refreshIcon.addEventListener('click', () => triggerRefresh(refreshIcon));
 mobileRefresh.addEventListener('click', () => triggerRefresh(mobileRefresh));
+
+// Remove time filter event listeners
+timeButtons.forEach(button => {
+    button.removeEventListener('click', () => {
+        timeButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        currentTimeFilter = button.dataset.time;
+        getRandomRecipe();
+    });
+});
 
 // Initial recipe load
 getRandomRecipe();
