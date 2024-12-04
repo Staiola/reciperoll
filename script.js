@@ -362,21 +362,20 @@ function setFallbackRecipe() {
 }
 
 // Function to trigger refresh animation and get new recipe
-function triggerRefresh(element) {
-    element.classList.add('rolling');
+function triggerRefresh() {
+    mobileRefresh.classList.add('rotating');
     getRandomRecipe();
     setTimeout(() => {
-        element.classList.remove('rolling');
-    }, 600);
+        mobileRefresh.classList.remove('rotating');
+    }, 500);
 }
 
-// Add click event to refresh icons
-refreshIcon.addEventListener('click', () => triggerRefresh(refreshIcon));
-mobileRefresh.addEventListener('click', () => triggerRefresh(mobileRefresh));
+// Add click event to mobile refresh
+mobileRefresh.addEventListener('click', triggerRefresh);
 
-// Remove time filter event listeners
+// Time filter event listeners
 timeButtons.forEach(button => {
-    button.removeEventListener('click', () => {
+    button.addEventListener('click', () => {
         timeButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
         currentTimeFilter = button.dataset.time;
