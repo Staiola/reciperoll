@@ -24,6 +24,12 @@ h1 {
     gap: 1rem;
 }
 
+.title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 .refresh-icon {
     width: 24px;
     height: 24px;
@@ -34,6 +40,248 @@ h1 {
 
 .refresh-icon:hover {
     transform: rotate(180deg);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.header-container h1 {
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.bookmarks-btn-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.bookmarks-btn {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 0;
+}
+
+.bookmarks-btn:hover {
+    background: #444;
+}
+
+.bookmarks-btn i {
+    font-size: 1.1rem;
+}
+
+.bookmark-icon {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bookmark-icon.active {
+    color: #ff4444;
+}
+
+.close-bookmarks {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 5px;
+    text-transform: lowercase;
+    transition: color 0.3s ease;
+}
+
+.close-bookmarks:hover {
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        margin-bottom: 1rem;
+    }
+
+    .title-container {
+        gap: 10px;
+    }
+
+    .title-container .refresh-icon {
+        display: none;
+    }
+
+    .mobile-refresh {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 80px;
+        height: 80px;
+        background: #222;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .mobile-refresh img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        filter: brightness(1) contrast(1);
+    }
+
+    .bookmarks-btn-container {
+        top: 15px;
+        right: 15px;
+    }
+
+    .bookmarks-btn {
+        width: 35px;
+        height: 35px;
+    }
+
+    .bookmarks-btn i {
+        font-size: 1rem;
+    }
+
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .header-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-right {
+        margin-top: 20px; /* Increased margin for larger icon */
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .time-filters {
+        margin-bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .price-btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .recipe-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .recipe-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .recipe-details {
+        margin-bottom: 1rem;
+    }
+
+    .recipe-details p {
+        font-size: 1rem;
+        margin: 0.3rem 0;
+    }
+
+    .recipe-image img {
+        height: 250px;
+    }
+
+    .view-recipe {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .bookmarks-btn.view-recipe {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .app-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .app-title .refresh-icon {
+        margin-left: 10px;
+    }
+}
+
+.mobile-refresh {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-refresh {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        width: 80px;
+        height: 80px;
+        background: #222;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .mobile-refresh img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        filter: brightness(1) contrast(1);
+    }
+
+    .header-container .refresh-icon {
+        width: 30px;
+        height: 30px;
+        right: 15px;
+    }
 }
 
 /* Time Filters */
@@ -293,253 +541,6 @@ h1 {
 .bookmarks-footer a:hover {
     color: white;
     text-decoration: underline;
-}
-
-/* Header Container Styles */
-.header-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    margin-bottom: 2rem;
-    padding-top: 20px;
-}
-
-.header-container h1 {
-    margin: 0;
-    font-size: 2rem;
-    text-align: center;
-}
-
-.header-container .refresh-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    filter: brightness(1) contrast(1);
-}
-
-.bookmarks-btn-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-.bookmarks-btn {
-    background: #333;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    padding: 0;
-}
-
-.bookmarks-btn:hover {
-    background: #444;
-}
-
-.bookmarks-btn i {
-    font-size: 1.1rem;
-}
-
-.bookmark-icon {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.bookmark-icon.active {
-    color: #ff4444;
-}
-
-.close-bookmarks {
-    background: none;
-    border: none;
-    color: #999;
-    cursor: pointer;
-    font-size: 0.8rem;
-    padding: 5px;
-    text-transform: lowercase;
-    transition: color 0.3s ease;
-}
-
-.close-bookmarks:hover {
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .header-container {
-        margin-bottom: 1rem;
-    }
-
-    .header-container h1 {
-        font-size: 1.8rem;
-    }
-
-    .header-container .refresh-icon {
-        width: 30px;
-        height: 30px;
-        right: 15px;
-    }
-
-    .mobile-refresh {
-        display: block;
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        width: 80px;
-        height: 80px;
-        background: #222;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .mobile-refresh img {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
-        filter: brightness(1) contrast(1);
-    }
-
-    .bookmarks-btn-container {
-        top: 15px;
-        right: 15px;
-    }
-
-    .bookmarks-btn {
-        width: 35px;
-        height: 35px;
-    }
-
-    .bookmarks-btn i {
-        font-size: 1rem;
-    }
-
-    body {
-        padding: 10px;
-    }
-
-    .container {
-        padding: 10px;
-    }
-
-    .header-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .header-left {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .header-right {
-        margin-top: 20px; /* Increased margin for larger icon */
-        display: flex;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .header-right .refresh-icon {
-        width: 120px;  /* 30px * 4 */
-        height: 120px; /* 30px * 4 */
-        object-fit: contain;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
-
-    .header-right .refresh-icon:hover {
-        transform: rotate(180deg);
-    }
-
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-        gap: 0.5rem;
-    }
-
-    .refresh-icon {
-        display: none;
-    }
-
-    .time-filters {
-        margin-bottom: 1rem;
-        gap: 0.5rem;
-    }
-
-    .price-btn {
-        padding: 0.4rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .recipe-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 1rem;
-    }
-
-    .recipe-header h2 {
-        font-size: 1.4rem;
-    }
-
-    .recipe-details {
-        margin-bottom: 1rem;
-    }
-
-    .recipe-details p {
-        font-size: 1rem;
-        margin: 0.3rem 0;
-    }
-
-    .recipe-image img {
-        height: 250px;
-    }
-
-    .view-recipe {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-    }
-
-    .bookmarks-btn.view-recipe {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-    }
-
-    .app-title {
-        display: flex;
-        align-items: center;
-    }
-
-    .app-title .refresh-icon {
-        margin-left: 10px;
-    }
-}
-
-.mobile-refresh {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .mobile-refresh {
-        display: flex !important;
-    }
 }
 
 /* Overlay Background */
