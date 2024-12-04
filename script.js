@@ -363,11 +363,14 @@ function setFallbackRecipe() {
 
 // Function to trigger refresh animation and get new recipe
 function triggerRefresh() {
-    mobileRefresh.classList.add('rotating');
-    getRandomRecipe();
-    setTimeout(() => {
-        mobileRefresh.classList.remove('rotating');
-    }, 500);
+    const button = document.querySelector('.mobile-refresh');
+    if (!button.classList.contains('rotating')) {
+        button.classList.add('rotating');
+        getRandomRecipe();
+        setTimeout(() => {
+            button.classList.remove('rotating');
+        }, 600);
+    }
 }
 
 // Add click event to mobile refresh
