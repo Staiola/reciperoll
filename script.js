@@ -361,12 +361,92 @@ function setFallbackRecipe() {
     recipeLink.href = '#';
 }
 
+// Confetti animation
+class Confetti {
+    constructor() {
+        this.canvas = document.getElementById('confetti-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead'];
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    }
+
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    createParticle() {
+        const refreshButton = document.querySelector('.mobile-refresh');
+        const rect = refreshButton.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        return {
+            x,
+            y,
+            size: Math.random() * 8 + 4,
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
+            speedX: (Math.random() - 0.5) * 15,
+            speedY: -Math.random() * 15 - 5,
+            rotation: Math.random() * Math.PI * 2,
+            rotationSpeed: (Math.random() - 0.5) * 0.2,
+            gravity: 0.5,
+            opacity: 1,
+            life: 1,
+            decay: Math.random() * 0.03 + 0.02
+        };
+    }
+
+    update() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            const p = this.particles[i];
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.speedY += p.gravity;
+            p.rotation += p.rotationSpeed;
+            p.life -= p.decay;
+            p.opacity = p.life;
+
+            this.ctx.save();
+            this.ctx.translate(p.x, p.y);
+            this.ctx.rotate(p.rotation);
+            this.ctx.globalAlpha = p.opacity;
+            this.ctx.fillStyle = p.color;
+            this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            this.ctx.restore();
+
+            if (p.life <= 0) {
+                this.particles.splice(i, 1);
+            }
+        }
+
+        if (this.particles.length > 0) {
+            requestAnimationFrame(() => this.update());
+        }
+    }
+
+    burst() {
+        // Create multiple particles
+        for (let i = 0; i < 50; i++) {
+            this.particles.push(this.createParticle());
+        }
+        this.update();
+    }
+}
+
+const confetti = new Confetti();
+
 // Function to trigger refresh animation and get new recipe
 function triggerRefresh() {
     const button = document.querySelector('.mobile-refresh');
     if (!button.classList.contains('rotating')) {
         button.classList.add('rotating');
         getRandomRecipe();
+        confetti.burst();
         setTimeout(() => {
             button.classList.remove('rotating');
         }, 600);

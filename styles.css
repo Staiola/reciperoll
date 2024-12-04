@@ -108,7 +108,8 @@ h1 {
     left: 20px;
     width: 80px;
     height: 80px;
-    background: #222;
+    background: #2a3b2f;
+    border: 1px solid #3d5244;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -116,18 +117,19 @@ h1 {
     cursor: pointer;
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .mobile-refresh:hover {
     transform: scale(1.05);
+    background: #334538;
 }
 
 .mobile-refresh img {
     width: 50px;
     height: 50px;
     object-fit: contain;
-    filter: brightness(1) contrast(1);
+    filter: brightness(1.2) contrast(0.95);
 }
 
 .mobile-refresh.rotating img {
@@ -813,4 +815,14 @@ h1 {
     .recipe-modal-close .close-icon {
         font-size: 20px;
     }
+}
+
+#confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
 }
