@@ -755,7 +755,7 @@ h1 {
 .recipe-modal-close {
     position: fixed;
     left: 0;
-    top: 10%;
+    bottom: 8%;
     transform: none;
     width: 55px;
     height: 50px;
@@ -793,7 +793,7 @@ h1 {
     .recipe-modal-close {
         width: 50px;
         height: 42px;
-        top: 5%;
+        bottom: 5%;
         padding-right: 3px;
     }
 
