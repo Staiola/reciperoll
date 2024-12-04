@@ -149,20 +149,53 @@ bookmarksBtn.addEventListener('click', toggleBookmarksOverlay);
 closeBookmarksBtn.addEventListener('click', toggleBookmarksOverlay);
 overlayBg.addEventListener('click', toggleBookmarksOverlay);
 
+// List of terms that indicate a dessert or sweet
+const DESSERT_TERMS = [
+    'cake', 'cookie', 'cookies', 'pudding', 'pie', 'sweet', 'dessert', 
+    'chocolate', 'ice cream', 'brownie', 'candy', 'sugar', 'pastry', 'pastries',
+    'muffin', 'cupcake', 'frosting', 'icing', 'caramel', 'toffee',
+    'donut', 'doughnut', 'custard', 'tart', 'cobbler'
+];
+
+// Function to check if a recipe is a dessert
+function isDessert(recipe) {
+    const titleLower = recipe.strMeal.toLowerCase();
+    const categoryLower = recipe.strCategory.toLowerCase();
+    
+    // If the category is explicitly "Dessert"
+    if (categoryLower === 'dessert') return true;
+    
+    // Check if any dessert terms appear in the title
+    return DESSERT_TERMS.some(term => titleLower.includes(term.toLowerCase()));
+}
+
 // Function to get a random recipe
 async function getRandomRecipe() {
     try {
-        // Fetch a random meal from the API
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/random.php`);
-        const data = await response.json();
-        
-        if (!data.meals || data.meals.length === 0) {
-            throw new Error('No recipes found');
+        let attempts = 0;
+        const maxAttempts = 10;
+        let selectedMeal;
+
+        while (attempts < maxAttempts) {
+            // Fetch a random meal from the API
+            const response = await fetch(`https://www.themealdb.com/api/json/v1/1/random.php`);
+            const data = await response.json();
+            
+            if (!data.meals || data.meals.length === 0) {
+                throw new Error('No recipes found');
+            }
+            
+            selectedMeal = data.meals[0];
+            
+            // If it's not a dessert, we can use this recipe
+            if (!isDessert(selectedMeal)) {
+                break;
+            }
+            
+            attempts++;
         }
-        
-        // Select the first (and only) meal
-        const selectedMeal = data.meals[0];
-        
+
+        // If we couldn't find a non-dessert recipe after max attempts, use the last recipe anyway
         displayRecipe(selectedMeal);
     } catch (error) {
         console.error('Error fetching recipe:', error);
