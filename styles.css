@@ -204,47 +204,65 @@ h1 {
 @media (max-width: 768px) {
     .recipe-content {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1.5rem;
+        gap: 0.8rem;
+        padding: 1rem;
+        margin: 0.5rem;
     }
 
     .recipe-image {
-        grid-row: 1;
-        margin: -1.5rem -1.5rem 0;
+        margin: -1rem -1rem 0;
         border-radius: 15px 15px 0 0;
     }
 
     .recipe-image img {
-        height: 300px;
+        height: 250px;
         border-radius: 15px 15px 0 0;
     }
 
-    .recipe-details {
-        grid-row: 2;
-        padding: 0;
+    .recipe-info {
+        padding: 0 0.3rem;
+        gap: 0.6rem;
     }
 
     .recipe-header {
-        grid-row: 3;
-    }
-
-    .recipe-actions {
-        grid-row: 4;
-        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.3rem;
+        padding-top: 0.3rem;
     }
 
     .recipe-header h2 {
-        font-size: 1.6rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.4rem;
+        margin: 0;
+        line-height: 1.25;
+        min-height: 3.75em;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        flex: 1;
+        padding-right: 0.8rem;
     }
 
-    .recipe-details p {
+    .view-recipe {
+        display: block;
+        text-align: center;
+        padding: 0.6rem 1rem;
         font-size: 0.9rem;
-        margin: 0.5rem 0;
+        background: #333;
+        border-radius: 6px;
+        margin-top: -0.3rem;
+    }
+
+    .recipe-details {
+        margin-top: 0.3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
     }
 }
 
-/* Recipe Info */
 .recipe-info {
     display: flex;
     flex-direction: column;
@@ -272,27 +290,27 @@ h1 {
 @media (max-width: 768px) {
     .recipe-info {
         padding: 0.5rem;
-        gap: 1rem;
+        gap: 0.8rem;
     }
 
     .recipe-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
     }
 
     .recipe-header h2 {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         margin: 0;
-        line-height: 1.3;
-        min-height: 4em; /* Space for approximately 3 lines */
+        line-height: 1.25;
+        min-height: 3.75em; /* Space for 3 lines at new font size */
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         flex: 1;
-        padding-right: 1rem;
+        padding-right: 0.8rem;
     }
 
     .recipe-actions {
@@ -302,29 +320,29 @@ h1 {
     .view-recipe {
         display: block;
         text-align: center;
-        padding: 0.7rem 1rem;
-        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
         background: #333;
         border-radius: 6px;
-        margin-top: -0.5rem; /* Pull up slightly to compensate for min-height */
+        margin-top: -0.3rem;
     }
 
     .recipe-details {
-        margin-top: 0.5rem;
+        margin-top: 0.4rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
     .recipe-details p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         margin: 0;
         color: #999;
     }
 
     .bookmark-btn {
-        padding: 0.5rem;
-        font-size: 1.2rem;
+        padding: 0.4rem;
+        font-size: 1.1rem;
         flex-shrink: 0;
     }
 }
