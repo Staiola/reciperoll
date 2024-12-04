@@ -151,10 +151,26 @@ overlayBg.addEventListener('click', toggleBookmarksOverlay);
 
 // List of terms that indicate a dessert or sweet
 const DESSERT_TERMS = [
-    'cake', 'cookie', 'cookies', 'pudding', 'pie', 'sweet', 'dessert', 
+    'cake', 'cookie', 'cookies', 'pudding', 'sweet', 'dessert', 
     'chocolate', 'ice cream', 'brownie', 'candy', 'sugar', 'pastry', 'pastries',
     'muffin', 'cupcake', 'frosting', 'icing', 'caramel', 'toffee',
     'donut', 'doughnut', 'custard', 'tart', 'cobbler'
+];
+
+// List of dessert-specific pie types
+const DESSERT_PIES = [
+    'apple pie',
+    'cherry pie',
+    'blueberry pie',
+    'peach pie',
+    'banana pie',
+    'cream pie',
+    'custard pie',
+    'fruit pie',
+    'pecan pie',
+    'pumpkin pie',
+    'sugar pie',
+    'sweet pie'
 ];
 
 // Function to check if a recipe is a dessert
@@ -166,7 +182,16 @@ function isDessert(recipe) {
     if (categoryLower === 'dessert') return true;
     
     // Check if any dessert terms appear in the title
-    return DESSERT_TERMS.some(term => titleLower.includes(term.toLowerCase()));
+    if (DESSERT_TERMS.some(term => titleLower.includes(term.toLowerCase()))) {
+        return true;
+    }
+
+    // Check specifically for dessert pies, but allow savory pies to pass through
+    if (titleLower.includes('pie')) {
+        return DESSERT_PIES.some(pie => titleLower.includes(pie.toLowerCase()));
+    }
+
+    return false;
 }
 
 // Function to get a random recipe
