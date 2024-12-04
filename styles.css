@@ -352,22 +352,16 @@ h1 {
     font-size: 1.1rem;
 }
 
-/* Mobile Styles */
+.bookmark-icon {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bookmark-icon.active {
+    color: #ff4444;
+}
+
 @media (max-width: 768px) {
-    .bookmarks-btn-container {
-        top: 15px;
-        right: 15px;
-    }
-
-    .bookmarks-btn {
-        width: 35px;
-        height: 35px;
-    }
-
-    .bookmarks-btn i {
-        font-size: 1rem;
-    }
-
     .header-container {
         margin-bottom: 1rem;
     }
@@ -404,6 +398,20 @@ h1 {
         height: 50px;
         object-fit: contain;
         filter: brightness(1) contrast(1);
+    }
+
+    .bookmarks-btn-container {
+        top: 15px;
+        right: 15px;
+    }
+
+    .bookmarks-btn {
+        width: 35px;
+        height: 35px;
+    }
+
+    .bookmarks-btn i {
+        font-size: 1rem;
     }
 
     body {
