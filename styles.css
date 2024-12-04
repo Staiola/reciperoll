@@ -361,6 +361,21 @@ h1 {
     color: #ff4444;
 }
 
+.close-bookmarks {
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 5px;
+    text-transform: lowercase;
+    transition: color 0.3s ease;
+}
+
+.close-bookmarks:hover {
+    color: white;
+}
+
 @media (max-width: 768px) {
     .header-container {
         margin-bottom: 1rem;
