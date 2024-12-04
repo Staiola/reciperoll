@@ -231,16 +231,20 @@ function showRecipeDetailsModal(recipe) {
     modal.className = 'recipe-modal';
     modal.innerHTML = `
         <div class="recipe-modal-content">
-            <span class="recipe-modal-close">&times;</span>
-            <h2>${recipe.strMeal}</h2>
+            <button class="recipe-modal-close" aria-label="Close modal">
+                <span class="close-icon">×</span>
+            </button>
             
-            <div class="recipe-modal-image">
-                <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
-                ${recipe.strSource ? `
-                    <a href="${recipe.strSource}" target="_blank" class="recipe-image-source-btn">
-                        Source
-                    </a>
-                ` : ''}
+            <div class="recipe-modal-header">
+                <div class="recipe-modal-image">
+                    <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}">
+                    ${recipe.strSource ? `
+                        <a href="${recipe.strSource}" target="_blank" class="recipe-image-source-btn">
+                            Source
+                        </a>
+                    ` : ''}
+                </div>
+                <h2>${recipe.strMeal}</h2>
             </div>
             
             <div class="recipe-modal-sections">
@@ -253,12 +257,13 @@ function showRecipeDetailsModal(recipe) {
                 
                 <div class="recipe-modal-instructions">
                     <h3>Instructions</h3>
-                    <p>${recipe.strInstructions}</p>
+                    <div class="instructions-text">
+                        ${recipe.strInstructions.split('\n').map(line => `<p>${line}</p>`).join('')}
+                    </div>
                 </div>
             </div>
             
             <div class="recipe-modal-links">
-                ${recipe.strSource ? `<a href="${recipe.strSource}" target="_blank" class="recipe-source-link">Original Recipe</a>` : ''}
                 ${recipe.strYoutube ? `<a href="${recipe.strYoutube}" target="_blank" class="recipe-youtube-link">Watch on YouTube</a>` : ''}
             </div>
         </div>
